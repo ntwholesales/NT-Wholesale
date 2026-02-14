@@ -1,0 +1,85 @@
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { motion } from "framer-motion";
+import { ShoppingCart } from "lucide-react";
+
+const products = [
+  { id: 1, name: "Wireless Headphones", category: "Electronics", price: "$59", image: "/images/electronics_headphones.jpg" },
+  { id: 2, name: "Smart Watch", category: "Electronics", price: "$129", image: "/images/electronics_smartwatch.jpg" },
+  { id: 3, name: "Bluetooth Speaker", category: "Electronics", price: "$39", image: "/images/electronics_speaker.jpg" },
+  { id: 4, name: "RC Car", category: "Toys & Games", price: "$45", image: "/images/toys_rccar.jpg" },
+  { id: 5, name: "Building Blocks Set", category: "Toys & Games", price: "$32", image: "/images/toys_blocks.jpg" },
+  { id: 6, name: "Board Game", category: "Toys & Games", price: "$28", image: "/images/toys_boardgame.jpg" },
+  { id: 7, name: "Skin Care Kit", category: "Beauty", price: "$49", image: "/images/beauty_skincare.jpg" },
+  { id: 8, name: "Hair Styling Tool", category: "Beauty", price: "$74", image: "/images/beauty_hairtool.jpg" },
+  { id: 9, name: "Makeup Essentials", category: "Beauty", price: "$65", image: "/images/beauty_makeup.jpg" },
+];
+
+const categories = ["All", "Electronics", "Toys & Games", "Beauty"];
+
+export default function Website() {
+  const [selectedCategory, setSelectedCategory] = React.useState("All");
+  const filteredProducts = selectedCategory === "All" ? products : products.filter(p => p.category === selectedCategory);
+
+  return (
+    <div className="min-h-screen bg-white p-6 font-sans">
+      {/* Header */}
+      <header className="max-w-6xl mx-auto mb-10 flex justify-between items-center">
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
+          <h1 className="text-4xl font-bold mb-1">NT Wholesales LTD</h1>
+          <p className="text-slate-600">Wholesale supplier of Electronics, Toys & Games, and Beauty Products</p>
+        </motion.div>
+        <img src="/images/logo.png" alt="NT Wholesales LTD Logo" className="h-16" />
+      </header>
+
+      {/* Category Filter */}
+      <div className="max-w-6xl mx-auto mb-6 flex gap-4">
+        {categories.map(cat => (
+          <Button 
+            key={cat} 
+            variant={selectedCategory === cat ? "default" : "outline"}
+            onClick={() => setSelectedCategory(cat)}
+          >
+            {cat}
+          </Button>
+        ))}
+      </div>
+
+      {/* Products Grid */}
+      <main className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {filteredProducts.map(product => (
+          <motion.div key={product.id} whileHover={{ scale: 1.03 }} transition={{ type: "spring", stiffness: 200 }}>
+            <Card className="rounded-2xl shadow-sm">
+              <CardContent className="p-4">
+                <img src={product.image} alt={product.name} className="w-full h-40 object-cover rounded-lg mb-3" />
+                <div className="mb-3">
+                  <div className="text-sm text-slate-500">{product.category}</div>
+                  <div className="text-lg font-semibold">{product.name}</div>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="font-medium">{product.price}</span>
+                  <Button size="sm" className="rounded-xl gap-2">
+                    <ShoppingCart size={16} /> Add
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        ))}
+      </main>
+
+      {/* Contact Section */}
+      <section className="max-w-6xl mx-auto mt-16 p-6 bg-slate-50 rounded-2xl">
+        <h2 className="text-2xl font-bold mb-4">Contact Us</h2>
+        <p>Email: contact@ntwholesales.com</p>
+        <p>Phone: +123 456 7890</p>
+        <p>Address: 123 Business Ave, City, Country</p>
+      </section>
+
+      {/* Footer */}
+      <footer className="max-w-6xl mx-auto mt-16 text-sm text-slate-500 text-center">
+        © {new Date().getFullYear()} NT Wholesales LTD. All rights reserved.
+      </footer>
+    </div>
+  );
+}
